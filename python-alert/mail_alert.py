@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -13,7 +14,7 @@ password = "vpmc dnec zsbh ahxy"  # Use an app password for Gmail
 
 def check_api_status():
     try:
-        with open(OUTPUT_FILE, "r", encoding="utf-16") as file:
+        with open(OUTPUT_FILE, "r", encoding="utf-8") as file:
             content = file.read()
             return EXPECTED_TEXT in content
     except FileNotFoundError:
