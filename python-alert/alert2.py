@@ -2,6 +2,7 @@ import requests
 
 # In this file we included redirection of output with in this file without using > redirection in linux to avoid encoding issues.
 try:
+    # Adding docker internal host url instead of localhost to make it work inside docker working directory.
     requests.post('http://host.docker.internal:8080/tasks', data="stay healthy")
     response = requests.get('http://host.docker.internal:8080/tasks', timeout=5)
 
