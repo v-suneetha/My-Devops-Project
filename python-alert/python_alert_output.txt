@@ -1,2 +1,1 @@
-API is working
-output: {"1":"Learn Java","2":"Learn Spring Boot","3":"Practice DevOps","4":"stay healthy","5":"stay healthy","6":"stay healthy","7":"stay healthy","8":"stay healthy","9":"stay healthy","10":"stay healthy","11":"stay healthy","12":"stay healthy","13":"stay healthy"}
+API is down and Unreachable
