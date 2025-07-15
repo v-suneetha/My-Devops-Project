@@ -1,6 +1,5 @@
 import requests
 
-
 try:
     # UnComment below code when you want to run it in docker workspace.
     '''requests.post('http://host.docker.internal:8080/tasks', data="stay healthy")
