@@ -1,0 +1,153 @@
+Started by user suneetha
+Obtained Jenkinsfile from git https://github.com/v-suneetha/My-Devops-Project.git
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in C:\Users\admin\.jenkins\workspace\My-Devops-project
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+ > git.exe rev-parse --resolve-git-dir C:\Users\admin\.jenkins\workspace\My-Devops-project\.git # timeout=10
+Fetching changes from the remote Git repository
+ > git.exe config remote.origin.url https://github.com/v-suneetha/My-Devops-Project.git # timeout=10
+Fetching upstream changes from https://github.com/v-suneetha/My-Devops-Project.git
+ > git.exe --version # timeout=10
+ > git --version # 'git version 2.45.2.windows.1'
+ > git.exe fetch --tags --force --progress -- https://github.com/v-suneetha/My-Devops-Project.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git.exe rev-parse "refs/remotes/origin/master^{commit}" # timeout=10
+Checking out Revision 6c32144f404e6aeb2be9fa10d9a6cd59dba169ba (refs/remotes/origin/master)
+ > git.exe config core.sparsecheckout # timeout=10
+ > git.exe checkout -f 6c32144f404e6aeb2be9fa10d9a6cd59dba169ba # timeout=10
+Commit message: "Adding Jenkinsfile"
+ > git.exe rev-list --no-walk 93105a227a1051ebe9737c3123cc6272ea5c9892 # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Checkout Code)
+[Pipeline] git
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+ > git.exe rev-parse --resolve-git-dir C:\Users\admin\.jenkins\workspace\My-Devops-project\.git # timeout=10
+Fetching changes from the remote Git repository
+ > git.exe config remote.origin.url https://github.com/v-suneetha/My-Devops-Project.git # timeout=10
+Fetching upstream changes from https://github.com/v-suneetha/My-Devops-Project.git
+ > git.exe --version # timeout=10
+ > git --version # 'git version 2.45.2.windows.1'
+ > git.exe fetch --tags --force --progress -- https://github.com/v-suneetha/My-Devops-Project.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git.exe rev-parse "refs/remotes/origin/master^{commit}" # timeout=10
+Checking out Revision 6c32144f404e6aeb2be9fa10d9a6cd59dba169ba (refs/remotes/origin/master)
+ > git.exe config core.sparsecheckout # timeout=10
+ > git.exe checkout -f 6c32144f404e6aeb2be9fa10d9a6cd59dba169ba # timeout=10
+ > git.exe branch -a -v --no-abbrev # timeout=10
+ > git.exe branch -D master # timeout=10
+ > git.exe checkout -b master 6c32144f404e6aeb2be9fa10d9a6cd59dba169ba # timeout=10
+Commit message: "Adding Jenkinsfile"
+[Pipeline] bat
+
+C:\Users\admin\.jenkins\workspace\My-Devops-project>echo C:\WINDOWS\system32\cmd.exe 
+C:\WINDOWS\system32\cmd.exe
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Replica to zero)
+[Pipeline] bat
+
+C:\Users\admin\.jenkins\workspace\My-Devops-project>kubectl scale deployment java-api --replicas=0 
+deployment.apps/java-api scaled
+[Pipeline] bat
+
+C:\Users\admin\.jenkins\workspace\My-Devops-project>kubectl scale deployment python-alert --replicas=0 
+deployment.apps/python-alert scaled
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Deploy to Kubernetes)
+[Pipeline] dir
+Running in C:\Users\admin\.jenkins\workspace\My-Devops-project\java-api
+[Pipeline] {
+[Pipeline] bat
+
+C:\Users\admin\.jenkins\workspace\My-Devops-project\java-api>kubectl apply -f deployment.yaml 
+deployment.apps/java-api configured
+[Pipeline] bat
+
+C:\Users\admin\.jenkins\workspace\My-Devops-project\java-api>kubectl apply -f service.yaml 
+service/java-api-service unchanged
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] dir
+Running in C:\Users\admin\.jenkins\workspace\My-Devops-project\python-alert
+[Pipeline] {
+[Pipeline] bat
+
+C:\Users\admin\.jenkins\workspace\My-Devops-project\python-alert>kubectl apply -f deployment.yaml 
+deployment.apps/python-alert configured
+[Pipeline] bat
+
+C:\Users\admin\.jenkins\workspace\My-Devops-project\python-alert>kubectl get pods 
+NAME                            READY   STATUS              RESTARTS   AGE
+java-api-789c7697b8-7sbs4       0/1     ContainerCreating   0          2s
+python-alert-54cc9fb8b8-tbpgg   1/1     Terminating         0          3m49s
+python-alert-54cc9fb8b8-zn8b7   0/1     ContainerCreating   0          1s
+[Pipeline] bat
+
+C:\Users\admin\.jenkins\workspace\My-Devops-project\python-alert>kubectl get svc 
+NAME               TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
+java-api-service   LoadBalancer   10.109.97.96   localhost     80:31867/TCP   41h
+kubernetes         ClusterIP      10.96.0.1      <none>        443/TCP        43h
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Get Java-api Logs)
+[Pipeline] bat
+
+C:\Users\admin\.jenkins\workspace\My-Devops-project>for /F "tokens=1" %i in ('kubectl get pods -o custom-columns=NAME:.metadata.name --no-headers | findstr java-api') do kubectl logs %i 
+
+C:\Users\admin\.jenkins\workspace\My-Devops-project>kubectl logs java-api-789c7697b8-7sbs4 
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Get python-alert Logs)
+[Pipeline] bat
+
+C:\Users\admin\.jenkins\workspace\My-Devops-project>for /F "tokens=1" %i in ('kubectl get pods -o custom-columns=NAME:.metadata.name --no-headers | findstr python-alert') do kubectl logs %i 
+
+C:\Users\admin\.jenkins\workspace\My-Devops-project>kubectl logs python-alert-54cc9fb8b8-tbpgg 
+Collecting requests
+  Downloading requests-2.32.4-py3-none-any.whl.metadata (4.9 kB)
+Collecting charset_normalizer<4,>=2 (from requests)
+  Downloading charset_normalizer-3.4.2-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (35 kB)
+Collecting idna<4,>=2.5 (from requests)
+  Downloading idna-3.10-py3-none-any.whl.metadata (10 kB)
+Collecting urllib3<3,>=1.21.1 (from requests)
+  Downloading urllib3-2.5.0-py3-none-any.whl.metadata (6.5 kB)
+Collecting certifi>=2017.4.17 (from requests)
+  Downloading certifi-2025.7.14-py3-none-any.whl.metadata (2.4 kB)
+Downloading requests-2.32.4-py3-none-any.whl (64 kB)
+Downloading charset_normalizer-3.4.2-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (148 kB)
+Downloading idna-3.10-py3-none-any.whl (70 kB)
+Downloading urllib3-2.5.0-py3-none-any.whl (129 kB)
+Downloading certifi-2025.7.14-py3-none-any.whl (162 kB)
+Installing collected packages: urllib3, idna, charset_normalizer, certifi, requests
+
+Successfully installed certifi-2025.7.14 charset_normalizer-3.4.2 idna-3.10 requests-2.32.4 urllib3-2.5.0
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+✅ API is working. No alert sent.
+
+C:\Users\admin\.jenkins\workspace\My-Devops-project>kubectl logs python-alert-54cc9fb8b8-zn8b7 
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
